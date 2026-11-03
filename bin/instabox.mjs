@@ -51,7 +51,7 @@ function usage() {
  * @returns {Promise<0|1|2>} 进程退出码
  */
 async function main() {
-  const config = loadConfig();
+  const config = await loadConfig();
 
   if (config.mode === "status") {
     return runStatus(config);
