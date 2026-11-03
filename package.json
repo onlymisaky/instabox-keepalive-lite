@@ -1,0 +1,21 @@
+{
+  "name": "instabox-keepalive-lite",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "InstaBox 沙盒保活：续租活动租约，暂停/停止时自动唤醒或启动",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "insta-box": "bin/instabox.mjs"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "scripts": {
+    "keepalive": "node bin/instabox.mjs keepalive",
+    "status": "node bin/instabox.mjs status"
+  }
+}

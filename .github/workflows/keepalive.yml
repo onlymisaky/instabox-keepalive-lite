@@ -1,0 +1,35 @@
+name: instabox-keepalive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: instabox-keepalive
+  cancel-in-progress: false
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Renew activity lease
+        env:
+          INSTABOX_API_KEY: ${{ secrets.INSTABOX_API_KEY }}
+          INSTABOX_MACHINE_ID: ${{ secrets.INSTABOX_MACHINE_ID }}
+        run: node bin/instabox.mjs keepalive
+      - name: Explain failure
+        if: failure()
+        run: |
+          echo "保活失败。依次检查："
+          echo "1) API Key 是否被撤销或过期"
+          echo "2) 是否出现 credit_exhausted（当月免费时长用尽）"
+          echo "3) 在本地执行 insta-box status 查看真实状态"
